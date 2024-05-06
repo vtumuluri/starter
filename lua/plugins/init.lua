@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = 'BufWritePre', -- uncomment for format on save
+    event = "BufWritePre", -- uncomment for format on save
     config = function()
       require "configs.conform"
     end,
@@ -36,6 +36,7 @@ return {
         "jdtls",
         "omnisharp",
         "prettier",
+        "autopep8",
         "pyright",
         "rust-analyzer",
         "stylua",
@@ -87,14 +88,14 @@ return {
     "nvim-tree/nvim-tree.lua",
     opts = {
       renderer = {
-        group_empty = true
-      }
-    }
+        group_empty = true,
+      },
+    },
   },
 
   {
-    'folke/todo-comments.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
   },
 
   "mfussenegger/nvim-jdtls",
@@ -103,8 +104,10 @@ return {
     "rcarriga/nvim-dap-ui",
     dependencies = {
       "mfussenegger/nvim-dap",
-    }
+    },
   },
+
+  "simrat39/rust-tools.nvim",
 
   "themaxmarchuk/tailwindcss-colors.nvim",
 
@@ -118,9 +121,7 @@ return {
     version = "*", -- recommended, use latest release instead of latest commit
     lazy = true,
     event = {
-      "BufReadPre "
-      .. vim.fn.expand "~"
-      .. "/gitbox/notes/**.md",
+      "BufReadPre " .. vim.fn.expand "~" .. "/gitbox/notes/**.md",
       "BufNewFile " .. vim.fn.expand "~" .. "/gitbox/notes/**.md",
     },
     dependencies = {

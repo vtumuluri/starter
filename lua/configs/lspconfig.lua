@@ -1,4 +1,4 @@
--- EXAMPLE 
+-- EXAMPLE
 local on_attach = require("nvchad.configs.lspconfig").on_attach
 local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
@@ -10,28 +10,34 @@ local servers = { "html", "cssls", "tsserver", "clangd", "pyright", "terraformls
 for _, lsp in ipairs(servers) do
   local attach = on_attach
   if lsp == "tailwindcss" then
-    attach = function (client, bufnr)
+    attach = function(client, bufnr)
       require("tailwindcss-colors").buf_attach(bufnr)
       on_attach(client, bufnr)
     end
   end
+  local attach_hint = function(client, bufnr)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(bufnr, true)
+      vim.lsp.buf.inlay_hint(bufnr, true)
+    end
+    attach(client, bufnr)
+  end
   lspconfig[lsp].setup {
-    on_attach    = attach,
-    on_init      = on_init,
+    on_attach = attach_hint,
+    on_init = on_init,
     capabilities = capabilities,
   }
 end
 
-
 lspconfig.omnisharp.setup {
-  cmd                                     = { "omnisharp" },
-  enable_editorconfig_support             = true,
+  cmd = { "omnisharp" },
+  enable_editorconfig_support = true,
   enable_ms_build_load_projects_on_demand = false,
-  enable_roslyn_analyzers                 = true,
-  organize_imports_on_format              = true,
-  enable_import_completion                = true,
-  sdk_include_prereleases                 = true,
-  analyze_open_documents_only             = false,
+  enable_roslyn_analyzers = true,
+  organize_imports_on_format = true,
+  enable_import_completion = true,
+  sdk_include_prereleases = true,
+  analyze_open_documents_only = false,
 }
 lspconfig.emmet_language_server.setup {
   filetypes = {
@@ -52,32 +58,32 @@ lspconfig.emmet_language_server.setup {
   -- **Note:** only the options listed in the table are supported.
   init_options = {
     --- @type string[]
-    excludeLanguages            = {},
+    excludeLanguages = {},
     --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
-    preferences                 = {},
+    preferences = {},
     --- @type boolean Defaults to `true`
     showAbbreviationSuggestions = true,
     --- @type "always" | "never" Defaults to `"always"`
-    showExpandedAbbreviation    = "always",
+    showExpandedAbbreviation = "always",
     --- @type boolean Defaults to `false`
-    showSuggestionsAsSnippets   = false,
+    showSuggestionsAsSnippets = false,
     --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
-    syntaxProfiles              = {},
+    syntaxProfiles = {},
     --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
-    variables                   = {},
+    variables = {},
   },
 }
 
 --
 -- lspconfig.pyright.setup { blabla}
 lspconfig.helm_ls.setup {
-  settings      = {
-    ['helm-ls'] = {
-      yamlls    = {
-        path    = "yaml-language-server",
-      }
-    }
-  }
+  settings = {
+    ["helm-ls"] = {
+      yamlls = {
+        path = "yaml-language-server",
+      },
+    },
+  },
 }
 lspconfig.yamlls.setup {
   on_attach = on_attach,
@@ -109,9 +115,9 @@ lspconfig.yamlls.setup {
     },
   },
 }
-local rt = require("rust-tools")
+local rt = require "rust-tools"
 
-rt.setup({
+rt.setup {
   server = {
     on_attach = function(_, bufnr)
       -- Hover actions
@@ -127,4 +133,4 @@ rt.setup({
       name = "rt-lldb",
     },
   },
-})
+}
