@@ -6,25 +6,25 @@ local M = {}
 
 M.ui = {
   theme = "ayu_light",
-  theme_toggle = { "ayu_light", "github_dark" },
+  theme_toggle = { "onedark", "ayu_light" },
 
   hl_override = {
     Comment = {
       italic = true,
     },
-    ['@comment'] = {
+    ["@comment"] = {
       italic = true,
     },
-    ['@string'] = {
+    ["@string"] = {
       italic = true,
-    }
+    },
   },
   hl_add = {
     NvimTreeOpenedFolderName = { fg = "green", bold = true },
   },
   statusline = {
-    theme = "minimal"
-  }
+    theme = "minimal",
+  },
 }
 
 return M
