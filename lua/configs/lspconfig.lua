@@ -4,7 +4,7 @@ local on_init = require("nvchad.configs.lspconfig").on_init
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "tsserver", "clangd", "pyright", "terraformls", "tailwindcss" }
+local servers = { "html", "cssls", "ts_ls", "clangd", "pyright", "terraformls", "tailwindcss", "gopls" }
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -17,8 +17,8 @@ for _, lsp in ipairs(servers) do
   end
   local attach_hint = function(client, bufnr)
     if client.server_capabilities.inlayHintProvider then
-      vim.lsp.inlay_hint.enable(bufnr, true)
-      vim.lsp.buf.inlay_hint(bufnr, true)
+      vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+      -- vim.lsp.buf.inlay_hint(bufnr, true)
     end
     attach(client, bufnr)
   end
