@@ -7,7 +7,13 @@ local M = {}
 M.ui = {
   theme = "ayu_dark",
   theme_toggle = { "ayu_dark", "one_light" },
-
+  cmp = {
+    lspkind_text = true,
+    style = "default",
+    format_colors = {
+      tailwind = true,
+    },
+  },
   hl_override = {
     Comment = {
       italic = true,
