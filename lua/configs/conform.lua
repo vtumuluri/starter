@@ -17,7 +17,6 @@ local options = {
     proto = { "clang_fmt" },
     nix = { "nixpkgs_fmt" },
   },
-
   -- format_on_save = {
   --   timeout_ms = 500,
   --   lsp_fallback = true,

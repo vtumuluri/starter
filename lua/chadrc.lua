@@ -7,7 +7,6 @@ local M = {}
 M.base46 = {
   theme = "dark_horizon",
   theme_toggle = { "dark_horizon", "one_light" },
-
   hl_override = {
     Comment = {
       italic = true,
@@ -26,7 +25,7 @@ M.base46 = {
     NvimTreeOpenedFolderName = { fg = "green", bold = true },
   },
   statusline = {
-    theme = "minimal",
+    theme = "default",
   },
 }
 

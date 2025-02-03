@@ -35,12 +35,6 @@ end, { desc = "Change Directory" })
 map("n", "<leader>tt", "<ESC><cmd>lua require('base46').toggle_theme()<CR>", { desc = "Toggle Theme" })
 map("n", "<leader>to", "<ESC><cmd>lua require('base46').toggle_transparency()<CR>", { desc = "Toggle Opacity" })
 -- map("n", ";", ":", {desc = "enter command mode", nowait = true })
--- map("n", "<leader>yx", "<cmd>Trouble symbols toggle focus=false<CR>", { desc = "Trouble Symbols" })
--- map("n", "<leader>yw", "<cmd>Trouble diagnostics toggle<CR>", { desc = "Trouble Diagnostics" })
--- map("n", "<leader>yd", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "Trouble Buffer Diagnostics" })
--- map("n", "<leader>yq", "<cmd>Trouble qflist toggle<CR>", { desc = "Trouble QuickFix List" })
--- map("n", "<leader>yl", "<cmd>Trouble loclist toggle<CR>", { desc = "Trouble Location List" })
--- map("n", "gR", "<cmd>Trouble lsp toggle focus=false win.position=right<CR>", { desc = "Trouble LSP References" })
 
 -- DAP Key mappings
 map("n", "<F5>", function()
