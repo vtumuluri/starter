@@ -23,7 +23,16 @@ function M.setup()
     nnoremap("<leader>ec", jdtls.extract_constant, bufopts, "Extract constant")
     vim.keymap.set('v', "<leader>em", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
       { noremap=true, silent=true, buffer=bufnr, desc = "Extract method" })
+
+    vim.keymap.set("n", "<leader>tf", "<Cmd>lua require('jdtls').test_class()<CR>", { noremap=true, silent=true, buffer=bufnr, desc = "Run test for class" })
+    vim.keymap.set("n", "<leader>tm", "<Cmd>lua require('jdtls').test_nearest_method()<CR>", { noremap=true, silent=true, buffer=bufnr, desc = "Run test for method" })
   end
+
+  local bundles = {
+    home .. '/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar',
+  };
+  vim.list_extend(bundles, vim.split(vim.fn.glob(home .. '/.local/share/nvim/mason/share/java-test/*.jar', 1), "\n"));
+  -- print(vim.inspect(bundles))
 
   local config = {
     flags = {
@@ -32,9 +41,7 @@ function M.setup()
     on_attach = on_attach,
     root_dir = root_dir,
     init_options = {
-      bundles = {
-        home .. "/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar"
-      }
+      bundles = bundles;
     },
     -- Here you can configure eclipse.jdt.ls specific settings
     -- These are defined by the eclipse.jdt.ls project and will be passed to eclipse when starting.

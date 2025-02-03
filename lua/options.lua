@@ -48,16 +48,6 @@ vim.api.nvim_create_autocmd("FileType", {
   group = augroup,
   callback = require("configs.jdtls").setup,
 })
--- local dap, dapui = require("dap"), require("dapui")
--- dap.listeners.after.event_initialized["dapui_config"] = function()
---   dapui.open()
--- end
--- dap.listeners.before.event_terminated["dapui_config"] = function()
---   dapui.close()
--- end
--- dap.listeners.before.event_exited["dapui_config"] = function()
---   dapui.close()
--- end
 
 -- vim.opt.list = true
 -- vim.opt.listchars = {
@@ -65,3 +55,125 @@ vim.api.nvim_create_autocmd("FileType", {
 --   trail = '.',
 --   nbsp = '⎵'
 -- }
+
+vim.g.clipboard = {
+  name = "WslClipboard",
+  copy = {
+    ["+"] = { "clip.exe" },
+    ["*"] = { "clip.exe" },
+  },
+  paste = {
+    ["+"] = {
+      "/mnt/c/Windows/System32/WindowsPowerShell/v1.0///powershell.exe",
+      "-c",
+      '[Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+    ["*"] = {
+      "/mnt/c/Windows/System32/WindowsPowerShell/v1.0///powershell.exe",
+      "-c",
+      '[Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+  },
+  cache_enabled = false,
+}
+
+-- DAP configurations
+local dap = require("dap");
+dap.adapters.codelldb = {
+  type = "server",
+  port = "${port}",
+  executable = {
+    command = os.getenv("VSCODELLDB_HOME") .. "/codelldb",
+    args = { "--port", "${port}" },
+  },
+};
+dap.adapters.cppdbg = {
+  type = "executable",
+  command = os.getenv("VSCODECPPTOOLS_HOME") .. "/bin/OpenDebugAD7",
+  id = "cppdbg",
+};
+
+dap.configurations.cpp = {
+  {
+    name = "Launch file",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopAtEntry = true,
+  },
+  {
+    name = 'Attach to gdbserver :1234',
+    type = 'cppdbg',
+    request = 'launch',
+    MIMode = 'gdb',
+    miDebuggerServerAddress = 'localhost:1234',
+    miDebuggerPath = '/usr/bin/gdb',
+    cwd = '${workspaceFolder}',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+  },
+};
+dap.configurations.c = dap.configurations.cpp;
+dap.configurations.rust = dap.configurations.cpp;
+
+dap.configurations.java = {
+  {
+    type = "java",
+    name = "Debug (Launch) - Current File",
+    request = "launch",
+    stopOnEntry = true,
+    console = "internalConsole",
+    workspace = "${workspaceFolder}",
+    classPath = "${workspaceFolder}/bin",
+    mainClass = "${fileBasenameNoExtension}",
+    vmArgs = "-Djava.library.path=${workspaceFolder}/lib",
+  },
+  {
+    type = "java",
+    name = "Debug (Launch) - Custom",
+    request = "launch",
+    stopOnEntry = true,
+    console = "internalConsole",
+    workspace = "${workspaceFolder}",
+    classPath = "${workspaceFolder}/bin",
+    mainClass = function()
+      return vim.fn.input('Main class: ')
+    end,
+    vmArgs = "-Djava.library.path=${workspaceFolder}/lib",
+  },
+  {
+    type = "java",
+    name = "Debug (Attach) - Remote",
+    request = "attach",
+    hostName = "localhost",
+    port = function()
+      return vim.fn.input('Port: ')
+    end,
+  },
+};
+
+vim.api.nvim_set_hl(0, 'DapBreakpoint', { ctermbg = 0, fg = 0, bg = 'red' })
+vim.api.nvim_set_hl(0, 'DapLogPoint', { ctermbg = 0, fg = '#61afef', bg = '#31353f' })
+vim.api.nvim_set_hl(0, 'DapStopped', { ctermbg = 0, fg = 0, bg = 'orange' })
+
+vim.fn.sign_define('DapBreakpoint', {text='🛑', texthl='DapBreakpoint', linehl='DapBreakpoint', numhl='DapBreakpoint'});
+vim.fn.sign_define('DapStopped', {text='|>', texthl='DapStopped', linehl='DapStopped', numhl='DapStopped'});
+
+
+local dapui = require("dapui");
+dap.listeners.before.attach.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.launch.dapui_config = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated.dapui_config = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited.dapui_config = function()
+  dapui.close()
+end

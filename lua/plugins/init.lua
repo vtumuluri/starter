@@ -38,7 +38,7 @@ return {
         "prettier",
         "autopep8",
         "pyright",
-        "rust-analyzer",
+        -- "rust-analyzer",
         "stylua",
         "tailwindcss-language-server",
         "terraform-ls",
@@ -98,13 +98,22 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
 
-  "mfussenegger/nvim-jdtls",
   "mfussenegger/nvim-dap",
+  {
+    "mfussenegger/nvim-jdtls",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+    },
+  },
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
       "mfussenegger/nvim-dap",
+      "nvim-neotest/nvim-nio",
     },
+    config = function()
+      require("dapui").setup()
+    end,
   },
 
   {
@@ -155,8 +164,41 @@ return {
 
   {
     "folke/trouble.nvim",
-    event = "LspAttach",
+    opts = {},
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    event = "LspAttach",
+    keys = {
+      {
+        "<leader>yw",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>yd",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>yx",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "gR",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>yl",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>yq",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+    },
   },
 
   {
@@ -167,5 +209,9 @@ return {
   {
     "junegunn/vim-easy-align",
     ft = { "markdown", "lua", "go", "c", "java" },
+  },
+  {
+    "github/copilot.vim",
+    lazy = false,
   },
 }

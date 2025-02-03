@@ -4,19 +4,22 @@
 ---@type ChadrcConfig
 local M = {}
 
-M.ui = {
-  theme = "ayu_light",
-  theme_toggle = { "onedark", "ayu_light" },
+M.base46 = {
+  theme = "dark_horizon",
+  theme_toggle = { "dark_horizon", "one_light" },
 
   hl_override = {
     Comment = {
       italic = true,
+      fg = "teal",
     },
     ["@comment"] = {
       italic = true,
+      fg = "teal",
     },
     ["@string"] = {
       italic = true,
+      fg = "orange",
     },
   },
   hl_add = {
