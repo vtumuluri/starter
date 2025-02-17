@@ -159,7 +159,7 @@ function M.setup()
     -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
     -- for the full list of options
     cmd = {
-      home .. '/.local/share/nvim/mason/bin/jdtls',
+      'jdtls',
       '-configuration', home .. '/.cache/jdtls/config',
       '-data', workspace_folder
   },

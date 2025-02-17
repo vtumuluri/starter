@@ -127,8 +127,37 @@ return {
       require("telescope").load_extension "yaml_schema"
     end,
   },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    lazy = false,
+    config = function()
+      require("telescope").load_extension "ui-select"
+    end,
+  },
 
-  "simrat39/rust-tools.nvim",
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^5", -- Recommended
+    lazy = false, -- This plugin is already lazy
+    config = function()
+      vim.g.rustaceanvim = {
+        tools = {
+          test_executor = "background",
+        },
+        server = {
+          on_attach = function(client, bufnr)
+            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+            vim.keymap.set("n", "<leader>ca", function()
+              vim.cmd.RustLsp "codeAction"
+            end, { silent = true, buffer = bufnr })
+            vim.keymap.set("n", "K", function()
+              vim.cmd.RustLsp { "hover", "actions" }
+            end, { silent = true, buffer = bufnr })
+          end,
+        },
+      }
+    end,
+  },
 
   "themaxmarchuk/tailwindcss-colors.nvim",
 
