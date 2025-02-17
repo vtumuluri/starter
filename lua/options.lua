@@ -83,7 +83,7 @@ dap.adapters.codelldb = {
   type = "server",
   port = "${port}",
   executable = {
-    command = os.getenv("VSCODELLDB_HOME") .. "/codelldb",
+    command = "codelldb",
     args = { "--port", "${port}" },
   },
 };
